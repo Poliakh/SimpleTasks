@@ -164,14 +164,16 @@ gulp.task('script', ()=>{
 	gulp.src(path.src.js)
 		.pipe(sourcemaps.init())
 		.pipe(plumber())
-		.pipe(concat('script.js'))
+		// .pipe(concat('script.js'))
+		.pipe(rigger())
+
 		// .pipe(babel({
 		// 	presets: ['@babel/env']
 		// }))
 		// .pipe(gulpif(argv.prod, uglify()))//минимазция js
 		.pipe(gulpif(!argv.prod, sourcemaps.write()))
 		.pipe(gulp.dest(path.build.js))
-		// .pipe(browserSync.reload({stream:true})); //незачем
+		.pipe(browserSync.reload({stream:true})); //незачем
 });
 
 gulp.task('server',()=>{
