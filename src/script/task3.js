@@ -14,43 +14,48 @@
 */
 class Hamburger{
 	constructor(size, stuffing){
-		// this.burger = {};
-		
 		this._size = size;
-		this._stuff = stuffing;
+		this._stuffing = stuffing;
+		console.log(this);
+		
 	}
-	createBurger(){
-		
-		console.log("burger");
-		
-	};
 	_check(){
 		if(!this._size){
 			return "бургер не добавлен"
-		}else if(this._stuff){
+		}else if(!this._stuffing){
 			return "добавка отсуствует"
 		}
+		return true;
 	}
 	get getBurger(){
 		return(
-			`size burger - ${this._size["size"]}, stuffing - ${this._stuff["stuffing"]}, topping - ${this._topping["topping"]}`
+			`burger: ${this._size["size"]}/${this._stuffing["stuffing"]}/${this._topping["topping"]}`
 		)
 	}
 	get getSize(){
 		return this._size;
 	}
 	get getStuffing(){
-		return this._stuff;
-
+				return this._stuff;
 	}
 	calculatePrice(){
-
+		let cost = 0;
+		for (const key in this) {
+			cost+= this[key].cost;
+		}
+		return cost;
 	}
 	calculateCalories(){
-
+		let calories = 0;
+		for (const key in this) {
+			calories+= this[key].cal;
+		}
+		return calories;
 	}
-	addTopping(topping){
-		this._topping = topping;
+	addTopping(topp){
+		console.log(topp.topping);
+		
+		
 	}
 	removeTopping(topping){
 
@@ -69,15 +74,19 @@ Hamburger.TOPPING_SPICE = {"topping":"spice", "cost":15, "cal":0};
 
 // маленький гамбургер с начинкой из сыра
 var hamburger = new Hamburger(Hamburger.SIZE_SMALL, Hamburger.STUFFING_CHEESE);
+console.log("проверка " + hamburger._check());
 
 	// добавка из майонеза
 hamburger.addTopping(Hamburger.TOPPING_MAYO);
-	// спросим сколько там калорий
-// console.log("Calories: %f", hamburger.calculateCalories());
-	// сколько стоит
-// console.log("Price: %f", hamburger.calculatePrice());
-	// я тут передумал и решил добавить еще приправу
-// hamburger.addTopping(Hamburger.TOPPING_SPICE);
+// console.log(hamburger.getBurger);
+
+// спросим сколько там калорий
+console.log("Calories: %f", hamburger.calculateCalories());
+// сколько стоит
+console.log("Price: %f", hamburger.calculatePrice());
+// я тут передумал и решил добавить еще приправу
+hamburger.addTopping(Hamburger.TOPPING_MAYO);
+hamburger.addTopping(Hamburger.TOPPING_SPICE);
 	// А сколько теперь стоит? 
 // console.log("Price with sauce: %f", hamburger.calculatePrice());
 	// Проверить, большой ли гамбургер? 
@@ -88,6 +97,5 @@ hamburger.addTopping(Hamburger.TOPPING_MAYO);
 
 // console.log(hamburger.getSize);
 // console.log(hamburger.getStuffing);
-console.log(hamburger.getBurger);
 
 
