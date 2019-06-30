@@ -14,54 +14,73 @@
 */
 class Hamburger{
 	constructor(size, stuffing){
+		this.burger = [];
+		this.burger.push(size, stuffing)
 		this._size = size;
 		this._stuffing = stuffing;
-		console.log(this);
-		
+		// console.log("myBurger: ");
+		// console.log(this.burger);
 	}
 	_check(){
-		if(!this._size){
-			return "бургер не добавлен"
-		}else if(!this._stuffing){
-			return "добавка отсуствует"
-		}
-		return true;
+		// if(!this._size){
+		// 	return "бургер не добавлен"
+		// }else if(!this._stuffing){
+		// 	return "начинка отсуствует"
+		// }
+		// return true;
 	}
 	get getBurger(){
-		return(
-			`burger: ${this._size["size"]}/${this._stuffing["stuffing"]}/${this._topping["topping"]}`
-		)
+		return this.burger;
 	}
-	get getSize(){
-		return this._size;
+	getSize(){
+		for (const item of this.burger) {
+			if(item.size){
+				return item;
+			}
+		}
 	}
 	get getStuffing(){
-				return this._stuff;
+		for (const item of this.burger) {
+			if(item.stuffing){
+				return item;
+			}
+		}
+	}
+	getToppings(){
+		return this.burger.filter(item=>{
+			return (!!item.topping)
+		});
+	}
+	_calculate(val){
+		return this.burger.reduce((prev,curr)=>{
+			return prev + curr[val];
+		},0);
 	}
 	calculatePrice(){
-		let cost = 0;
-		for (const key in this) {
-			cost+= this[key].cost;
-		}
-		return cost;
+		return this._calculate("cost");
 	}
 	calculateCalories(){
-		let calories = 0;
-		for (const key in this) {
-			calories+= this[key].cal;
-		}
-		return calories;
+		return this._calculate("cal");
 	}
 	addTopping(topp){
-		console.log(topp.topping);
-		
-		
+		let noItem = this.burger.some((item)=>{
+			if(item.topping == topp.topping){
+				alert("Нельзя добавить добавку второй раз");
+				return true
+			};
+		})
+		if (!noItem) {
+			this.burger.push(topp);
+		}
 	}
-	removeTopping(topping){
-
+	removeTopping(topp){
+		this.burger.some(item=>{
+			if(item.topping == topp.topping){
+				delete item.topping;
+			}
+		})
 	}
 };
-
 /* Размеры, виды начинок и добавок */
 Hamburger.SIZE_SMALL = {"size":"small", "cost":50, "cal":20};
 Hamburger.SIZE_LARGE = {"size":"large", "cost":100, "cal":40};
@@ -74,28 +93,29 @@ Hamburger.TOPPING_SPICE = {"topping":"spice", "cost":15, "cal":0};
 
 // маленький гамбургер с начинкой из сыра
 var hamburger = new Hamburger(Hamburger.SIZE_SMALL, Hamburger.STUFFING_CHEESE);
-console.log("проверка " + hamburger._check());
-
-	// добавка из майонеза
-hamburger.addTopping(Hamburger.TOPPING_MAYO);
-// console.log(hamburger.getBurger);
+// console.log("проверка " + hamburger._check());
 
 // спросим сколько там калорий
 console.log("Calories: %f", hamburger.calculateCalories());
-// сколько стоит
+// // сколько стоит
 console.log("Price: %f", hamburger.calculatePrice());
 // я тут передумал и решил добавить еще приправу
 hamburger.addTopping(Hamburger.TOPPING_MAYO);
+// hamburger.addTopping(Hamburger.TOPPING_MAYO);//выведет ошибку
 hamburger.addTopping(Hamburger.TOPPING_SPICE);
 	// А сколько теперь стоит? 
-// console.log("Price with sauce: %f", hamburger.calculatePrice());
+console.log("Price with sauce: %f", hamburger.calculatePrice());
+console.log("Calories with sauce: %f", hamburger.calculatePrice());
 	// Проверить, большой ли гамбургер? 
-// console.log("Is hamburger large: %s", hamburger.getSize() === Hamburger.SIZE_LARGE); // -> false
+console.log("Is hamburger large: %s", hamburger.getSize() === Hamburger.SIZE_LARGE); // -> false
+console.log("Is hamburger small: %s", hamburger.getSize() === Hamburger.SIZE_SMALL); // -> false
 	// Убрать добавку
 // hamburger.removeTopping(Hamburger.TOPPING_SPICE);
-// console.log("Have %d toppings", hamburger.getToppings().length); // 1
+console.log("Have %d toppings", hamburger.getToppings().length); // 1
 
-// console.log(hamburger.getSize);
-// console.log(hamburger.getStuffing);
-
+console.info("getSize: ", hamburger.getSize());
+// console.log();
+console.info("getStuff: ", hamburger.getStuffing);
+console.info("getTopping: ", hamburger.getToppings());
+console.info(`MyBurger:`, hamburger.getBurger);
 
